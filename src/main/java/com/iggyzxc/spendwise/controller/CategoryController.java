@@ -22,7 +22,7 @@ public class CategoryController {
         try {
             return new ResponseEntity<>(categoryService.createCategory(categoryDTO), HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -32,17 +32,47 @@ public class CategoryController {
         try {
             return ResponseEntity.ok(categoryService.getCategoryById(id));
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
+    // View all categories
     @GetMapping("/")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         try {
             List<CategoryDTO> allCategories = categoryService.getAllCategories();
             return ResponseEntity.ok(allCategories);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // Update category
+    @PutMapping("/{id}/")
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id,
+                                                      @RequestBody CategoryDTO categoryDTO) {
+        try {
+            CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
+                if (updatedCategory != null) {
+                    return ResponseEntity.ok(updatedCategory);
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Delete category
+    @DeleteMapping("/{id}/")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+        try {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.ok("Category deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Failed to delete category with ID: " + id);
         }
     }
 }

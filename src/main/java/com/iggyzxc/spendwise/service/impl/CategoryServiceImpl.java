@@ -7,8 +7,6 @@ import com.iggyzxc.spendwise.repository.CategoryRepository;
 import com.iggyzxc.spendwise.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException(
-                        String.format("Category with id %s not found", id)));
+                        String.format("Category with id %s not found", id)
+                ));
         return CategoryMapper.fromEntity(category);
     }
 
@@ -43,4 +42,27 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(CategoryMapper::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Category with id %s not found", id)
+                ));
+        category.setName(categoryDTO.name());
+        Category updatedCategory = categoryRepository.save(category);
+        return CategoryMapper.fromEntity(updatedCategory);
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                        .orElseThrow(() -> new RuntimeException(
+                                String.format("Category with id %s not found", id)
+                        ));
+        categoryRepository.delete(category);
+    }
+
 }
