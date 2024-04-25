@@ -7,6 +7,11 @@ import com.iggyzxc.spendwise.repository.CategoryRepository;
 import com.iggyzxc.spendwise.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -19,5 +24,23 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = CategoryMapper.toEntity(categoryDTO);
         Category savedCategory = categoryRepository.save(category);
         return CategoryMapper.fromEntity(savedCategory);
+    }
+
+    @Override
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Category with id %s not found", id)));
+        return CategoryMapper.fromEntity(category);
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories
+                .stream()
+                .map(CategoryMapper::fromEntity)
+                .collect(Collectors.toList());
     }
 }
