@@ -50,9 +50,7 @@ public class CategoryController {
             description = "Retrieve a category from the database by its ID."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category found.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CategoryDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Category found."),
             @ApiResponse(responseCode = "404", description = "Category not found."),
             @ApiResponse(responseCode = "500", description = "Internal server error.")
     })
