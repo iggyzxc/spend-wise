@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {

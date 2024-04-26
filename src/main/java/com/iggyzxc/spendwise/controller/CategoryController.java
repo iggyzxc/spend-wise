@@ -17,7 +17,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     // Create a category
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
         try {
             return new ResponseEntity<>(categoryService.createCategory(categoryDTO), HttpStatus.CREATED);
@@ -27,7 +27,7 @@ public class CategoryController {
     }
 
     // View a category by id
-    @GetMapping("/{id}/")
+    @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(categoryService.getCategoryById(id));
@@ -37,7 +37,7 @@ public class CategoryController {
     }
 
     // View all categories
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         try {
             List<CategoryDTO> allCategories = categoryService.getAllCategories();
@@ -48,7 +48,7 @@ public class CategoryController {
     }
 
     // Update category
-    @PutMapping("/{id}/")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id,
                                                       @RequestBody CategoryDTO categoryDTO) {
         try {
@@ -59,12 +59,15 @@ public class CategoryController {
                     return ResponseEntity.notFound().build();
                 }
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .header("error-description", "Failed to update.")
+                    .build();
         }
     }
 
     // Delete category
-    @DeleteMapping("/{id}/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         try {
             categoryService.deleteCategory(id);
