@@ -7,14 +7,13 @@ import com.iggyzxc.spendwise.entity.Expense;
 
 public class ExpenseMapper {
     public static Expense toEntity(ExpenseDTO expenseDTO) {
-        Category category = new Category();
-        category.setId(expenseDTO.categoryDTO().id());
-
         return new Expense(
                 expenseDTO.id(),
                 expenseDTO.amount(),
                 expenseDTO.expenseDate(),
-                category
+                new Category(
+                        expenseDTO.categoryDTO().id()
+                )
         );
     }
 
