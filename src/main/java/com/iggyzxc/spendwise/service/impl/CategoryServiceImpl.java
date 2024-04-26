@@ -2,6 +2,7 @@ package com.iggyzxc.spendwise.service.impl;
 
 import com.iggyzxc.spendwise.dto.CategoryDTO;
 import com.iggyzxc.spendwise.entity.Category;
+import com.iggyzxc.spendwise.exception.ResourceNotFoundException;
 import com.iggyzxc.spendwise.mapper.CategoryMapper;
 import com.iggyzxc.spendwise.repository.CategoryRepository;
 import com.iggyzxc.spendwise.service.CategoryService;
@@ -28,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Category with id %s not found", id)
                 ));
         return CategoryMapper.fromEntity(category);
@@ -48,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         Category category = categoryRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Category with id %s not found", id)
                 ));
         category.setName(categoryDTO.name());
@@ -60,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long id) {
         Category category = categoryRepository
                 .findById(id)
-                        .orElseThrow(() -> new RuntimeException(
+                        .orElseThrow(() -> new ResourceNotFoundException(
                                 String.format("Category with id %s not found", id)
                         ));
         categoryRepository.delete(category);

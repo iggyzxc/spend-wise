@@ -3,6 +3,7 @@ package com.iggyzxc.spendwise.service.impl;
 import com.iggyzxc.spendwise.dto.ExpenseDTO;
 import com.iggyzxc.spendwise.entity.Category;
 import com.iggyzxc.spendwise.entity.Expense;
+import com.iggyzxc.spendwise.exception.ResourceNotFoundException;
 import com.iggyzxc.spendwise.mapper.ExpenseMapper;
 import com.iggyzxc.spendwise.repository.CategoryRepository;
 import com.iggyzxc.spendwise.repository.ExpenseRepository;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
-    private final CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
     private ExpenseRepository expenseRepository;
 
     @Override
@@ -30,7 +31,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public ExpenseDTO getExpenseById(Long id) {
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Expense not found with id: " + id));
         return ExpenseMapper.fromEntity(expense);
     }
 
@@ -49,7 +51,8 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense expense = expenseRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Expense not found with id: " + id)
+                        () -> new ResourceNotFoundException(
+                                "Expense not found with id: " + id)
                 );
 
         expense.setAmount(expenseDTO.amount());
@@ -60,7 +63,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             Category expenseCategory = categoryRepository
                     .findById(expenseDTO.categoryDTO().id())
                     .orElseThrow(
-                            () -> new RuntimeException(
+                            () -> new ResourceNotFoundException(
                                     "Category not found with id: " + expenseDTO.categoryDTO().id()
                             )
                     );
@@ -74,7 +77,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpense(Long id) {
         Expense expense = expenseRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Expense not found with id: " + id));
         expenseRepository.delete(expense);
     }
 }
