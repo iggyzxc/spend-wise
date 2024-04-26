@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/expenses")
@@ -22,17 +24,23 @@ public class ExpenseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseDTO> getExpenseById(@PathVariable Long id) {
-        ExpenseDTO expenseDTO = expenseService.getExpenseById(id);
-        return ResponseEntity.ok(expenseDTO);
+        return ResponseEntity.ok(expenseService.getExpenseById(id));
     }
 
+    @GetMapping
+    public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
+        return ResponseEntity.ok(expenseService.getAllExpenses());
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ExpenseDTO> updateExpense(@PathVariable Long id,
+                                                    @RequestBody ExpenseDTO expenseDTO) {
+        return ResponseEntity.ok(expenseService.updateExpense(id, expenseDTO));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);
         return ResponseEntity.ok("Expense deleted successfully.");
     }
-
-
 }

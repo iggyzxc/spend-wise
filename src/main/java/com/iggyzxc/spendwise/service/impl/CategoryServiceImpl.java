@@ -40,7 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categories
                 .stream()
                 .map(CategoryMapper::fromEntity)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()
+                );
     }
 
     @Override
