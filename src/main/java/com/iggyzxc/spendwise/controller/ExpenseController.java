@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
-    ExpenseService expenseService;
+    private ExpenseService expenseService;
 
     @PostMapping
     public ResponseEntity<ExpenseDTO> createExpense(@RequestBody ExpenseDTO expenseDTO) {
