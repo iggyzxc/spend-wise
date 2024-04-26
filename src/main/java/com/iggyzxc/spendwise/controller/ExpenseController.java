@@ -1,13 +1,11 @@
 package com.iggyzxc.spendwise.controller;
 
-import com.iggyzxc.spendwise.dto.CategoryDTO;
 import com.iggyzxc.spendwise.dto.ExpenseDTO;
 import com.iggyzxc.spendwise.service.ExpenseService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "Expense CRUD Operations",
+        description = "This controller provides CRUD operations for managing expense resources. " +
+                "You can create, read, update, and delete expenses using the respective endpoints. " +
+                "These APIs allow you to efficiently manage expense data within your application."
+)
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/expenses")
